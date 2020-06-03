@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Omics Integration and Systems Biology</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Ashfaq Ali" />
+    <link rel="stylesheet" href="assets/presentation.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Omics Integration and Systems Biology
+## An Introduction
+### <b>Ashfaq Ali</b>
+### NBIS, SciLife lab, Lund University, Sweden
+### 2020/05/14 (updated: 2020-05-19)
+
+---
+
+
+
+## Omics Integration and Systems Biology Overview 
+
+ - **Background and rationale**
+ 
+  - Definitions: What is *"Omics"*  integration and Systems Biology
+  
+  - Challenges
+  
+ - **Omics Integration Techniques**
+ 
+  - Data driven approaches: relying on measurements at hand
+
+  - Network Approach
+  
+    - *Genome scale models and biological networks*
+    - *Gene Set Enrichment and Pathway analyses*
+
+ - **Important steps in data integration**
+ 
+  - Data Management and harmonization 
+  
+  - Data scaling, dimensionality and distribution
+  
+  - Visualizations that deliver relevant message
+
+  
+???
+Add statistical methods in the future lectures
+
+---
+
+## Background and rationale 
+
+ - **Omics Integration**
+ 
+  - **What is Omics data Integration:** Ask 5 different people, get 5 different answers
+  
+  - May refer to study of **commonalities and differences** between two or more omics data sets
+  
+  - May refer to **variation explained beyond single omics**
+  
+  - May refer to **knowledge integration** to strengthen evidence obtained on a single or multiple omics 
+  
+ - **Systems Biology**
+ 
+  - What is Systems Biology: *Ask 5 different people, get 10 different answers*
+  
+  - May refer to study biological processes at a holistic level, not always omics or high throughput
+  
+  - A system may comprise of a cell, a tissue, an organism or an ecosystem
+  
+  - Systems maybe static or dynamic
+  
+  - Involves combination *In Silico* and *In-vitro* experiments.
+  
+---
+
+
+## Why Data integration? 
+
+
+ - Biological processes do not work alone in isolation
+ 
+ - Model and Address heterogeneity across data sets 
+ 
+ 
+
+---
+
+## Omics measurements
+
+ - **Omics measurements are fundamentally different due to technical reasons**
+  - Sequencing techniques vs. mass spectrometry based technologies have different   
+  dynamic range and measurement space. 
+  - Itnesities do not always correspond to actual amount in the sample. This makes global normalization tricky.
+  - Same samples measure after a period of time does not correspond to same values. 
+   
+
+ - **Different Omics measure fundamentally different aspects of biology**
+ 
+  - A classic example is *Phosphoproteomics* where proteins are present in very small amounts but just addition of modification leads to activity.
+  
+  - Obviously measuring omics in blood vs. tissue have different interpretations 
+
+ - **Some times (in fact most of the time) it is best to statistically analyse omics data with respective pipelines and then try to Integrate them.**
+  - Add followup *look ups* or statistical test for association/correlations. **Meta Analyses**
+  - Rather rely on visualizations that communicate with the audience you are interested in.
+  
+ - **Avoid strict cut-offs and binning of the data just based on p-values when comparing different Omics**
+
+---
+
+
+## Omics Data Integration
+
+ - **Under developed and continuously filed in bioinformatics**  
+ 
+ - Combine data, find shared and distinct information information.  
+ 
+ - We learn tools and ways of working with different types of data (Venn diagram's anyone?)  
+ 
+ - Interpretation and application depends on the study questions  
+ - More data -&gt; More tools -&gt; More complexity (Redundancy, contradictions)  
+ - Needs across disciplinary communication  
+ 
+ - Clever visualizations lead to impact, **poor visualizations = less impact**, No visualization = Hardly any impact. Big impact papers these crap a lot of data into complex figures. 
+  
+ - Many tools and approaches, guideline only for specific purposes. ***More Responsibility on the analyst to document analyses  pipelines.***
+
+???
+
+_Spend Five minutes_.
+---
+
+## Challenges in Omics-integration to keep in mind
+
+A comprehensive overview of tools for omics integration ([Misra et al](https://jme.bioscientifica.com/view/journals/jme/62/1/JME-18-0055.xml)). 
+
+
+&lt;img src="Figures/Challenges_Misra.jpg" class="fancyimage size-80"&gt;
+
+Reproducibility in a science at juvenile stage.
+
+---
+
+## Omics Integration Techniques: Data Driven
+
+ - **Unsupervised analysis:** no known sample groups and is exploratory
+ 
+  - Principal Component Analysis [(PCA)](https://www.nature.com/articles/nbt0308-303) for dimensionality reduction
+  - Projection to Latent Structures (PLS) to model multiple phenotypes
+  - Canonical Correlation Analysis (CCA) to find linear combinations of maximum correlations
+
+ - **Supervised analysis:** Class membership to discriminate sample groups and perform  prediction 
+  - PLS Discriminant Analysis (PLS-DA), 
+  - Data Integration Analysis for Biomarker discovery using a Latent cOmponents  **[DIABLO](https://www.biorxiv.org/content/10.1101/067611v2)** 
+  - MINT (F Rohart et al. 2017).
+
+ - [A show case example](https://www.nature.com/articles/s41467-019-08794-x) applying mixomics and biological network integration.
+---
+
+## Omics Integration Techniques: Data Driven
+- ** R Package [mixOmics](https://www.biorxiv.org/content/10.1101/067611v2)** implemented methods
+
+&lt;img src="Figures/mixOmics-Framework.jpg" class="fancyimage size-80"&gt;
+
+---
+## Omics Integration Techniques: DIABLO Example
+
+**A ProteoGenomics Study Example from Diffuse large B-cell lymphoma (DLBCL)**
+.pull-left-50[
+&lt;img src="Figures/Sample_Overview.png"class="fancyimage size-100"&gt;
+]
+
+.pull-left-50[
+
+- The study aims to find predictive markers for Immunotherapy response
+
+- Measured ~6000 proteins (TMT) in ~200 samples 
+
+- RNA-Seq ~ 20 000 genes in 66 samples
+
+- About 50 overlapping samples
+]
+---
+
+## Steps in data Integration
+
+- Transform protein ratio data to intensities
+
+- Remove Batch effects in the data
+
+- Transform count RNA-seq data (voom)
+
+- Scale the data
+
+- Extract overlapping samples from omics
+
+- Identify explained variance and optimal number of PCs
+
+- Identify number of features fro each PC and each data set
+
+- Model important discriminating features
+
+---
+
+## **DIABLO Application**
+.pull-left-50[
+
+
+
+&lt;img src="Figures/DIABLO-1.png"class="fancyimage size-80"&gt;
+
+- Dimensionality reduction to extract latent variables
+- Association of latent variables with phenotype
+]
+.pull-right-50[
+&lt;img src="Figures/PCs_selection.png"class="fancyimage size-80"&gt;
+
+- The first two components capture most of the variation in the data here
+- One needs to test various combinations of features for each PC and data set
+
+]
+
+---
+
+## Application of DIABLO to Large B cell Lymphoma data
+.pull-left-50[
+
+&lt;img src="Figures/VariablePlot.png"class="fancyimage size-80"&gt;
+&lt;img src="Figures/IndividualPlot.png"class="fancyimage size-100"&gt;
+]
+
+.pull-right-50[
+&lt;img src="Figures/RocCurve.png"class="fancyimage size-85"&gt;
+
+- Model allows ROC curves and prediction analyses
+ - Dummy example
+]
+
+---
+## Most imporant variable from the integrated analyses
+.pull-left-50[
+- Heat map of selected RNA and proteins and their relationship with phenotype
+&lt;img src="Figures/ClusteringDiablo.png"class="fancyimage size-100"&gt;
+]
+.pull-right-40[
+
+- Weights of individual variables in disciminant analyses
+- Here RNA-seq data provided more features relevant for this phenotype
+
+&lt;img src="Figures/LoadingsDIABLO.png"class="fancyimage size-90"&gt;
+]
+---
+## Correlation across RNA and protein data
+.pull-left-50[
+**Global correlation at fold changes  level**
+&lt;img src="Figures/Corr_RNA_Proteins_RelVsCured.png"class="fancyimage size-80"&gt;
+
+**Correlation for extracted variables DIABLO**
+&lt;img src="Figures/CorrPlot_DIABLO.png"class="fancyimage size-80"&gt;
+]
+.pull-right-40[
+
+&lt;img src="Figures/CircosDiablo.png"class="fancyimage size-110"&gt;
+
+
+- Diablo model extracts variables most consistent across omics
+]
+
+---
+
+class: inverse, left, middle
+## What are Genome scale metabolic models (GEMs)
+
+.pull-left-50[
+- Genome-scale metabolic models (GEMs) are mathematical reconstructions of the metabolic networks with all known metabolic reactions
+
+- In some cases, GEMs could represent the whole tissue or body of a multicellular organism.
+
+- In these metabolic networks, the gene-protein-reaction (GPR) relationships are annotated. 
+
+- All the reactions in GEMs are mass-balanced, ensuring stoichiometric balance.
+
+]
+
+.pull-right-50[
+&lt;img src="Figures/Fundamentals_ofGems.png" class="fancyimage size-110"&gt;
+
+]
+
+
+---
+## Fundamentals of Genome Scale Metabolic Modelling
+
+
+**Metabolic reconstruction:**
+
+A carefully curated and biochemically validated knowledge base in which all known chemical reactions for an organism are detailed and cataloged.
+
+**Genome-scale model**
+A condition-specific, mathematically described, commutable derivative of a metabolic reconstruction, containing comprehensive knowledge of metabolism.
+
+**Solution space:**
+The feasible region satisfying a set of constraints. In constraint-based reconstruction and analysis (COBRA) models, this represents the feasible flux values for all of the reactions in the model.
+
+**Flux distributions**
+
+A set of steady-state fluxes for all of the reactions in a metabolic network. 
+
+
+???
+_Notes_.
+
+---
+## Why GEMs in Omics integration
+
+- (GEMs): a valuable systems biology platforms for 
+  - Model-guided data analysis of large omics datasets
+  - Provide cellular context to the data 
+  - Allow the integration of diverse omics data 
+  - Directly link metabolites to enzymes.
+
+  - Elucidate how changes in one component affect other pathways and cell phenotype 
+  - Growth, cell energetic 
+  - Pathway ﬂuxes 
+  - Biosynthesis of cell components, byproduct secretion, etc.
+  - These systems biology models can provide a mechanistic link from **genotype to phenotype**
+  
+  
+
+[Opdam *etal* ](https://www.cell.com/fulltext/S2405-4712(17) *Cell Systems 4, 318–329, March 22, 2017*
+---
+## An overview of human genome scale metabolic models (GEMs)
+
+&lt;img src ="Figures/GEMs_applications_Varmo.jpeg" class= "fancyimage size-80"&gt;
+
+---
+## Model Extraction Algorithms and analyses
+
+- [COBRA](https://opencobra.github.io/cobratoolbox/stable/)
+- [RAVEN](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006541)
+
+**tINIT Algorithm**
+
+&lt;img src="Figures/Reconstructions_tINIT.jpg" class="fancyimage size-70"&gt;
+---
+## Context Specific Models  
+
+&lt;img src="Figures/Context_specific_models.png" class="fancyimage size-100"&gt;
+**Example: The number of reactions active in given pathways in two conditions.**
+---
+## Performance of diferent algorithms and relevance
+
+- Different parameters and algorithms yielded diverse models
+
+- Extraction method most strongly affected accuracy of gene essentiality predictions
+
+  
+
+
+.pull-left[
+&lt;img src="Figures/ModelSizeVsFunctionalities.png" class="fancyimage size-75"&gt;
+
+
+&lt;img src="Figures/ModelSimilarityAlgorithms.png" class="fancyimage size-75"&gt;
+]
+
+.pull-right[
+ - Essentially the parameters algorithms use to create context specific models explain the largest variation in your data.
+
+- We will only cover Reaction Enrichment in Piano that one can follow up using HMR.
+
+[Opdam *etal* ](https://www.cell.com/fulltext/S2405-4712(17) *Cell Systems 4, 318–329, March 22, 2017*
+
+]
+???
+A comparison of reconstructions using different Algorithms and their functionalities.
+---
+## Gene Set Enrichment Analyses HMR as a Network and gene set Enrichment Analyses
+
+```
+  ensembl_gene_id  baseMean log2FoldChange       pvalue    padj
+1 ENSG00000000003 490.01721      0.9145204 3.661641e-17 0.00376
+2 ENSG00000000419 817.78066     -0.1894651 6.001737e-02 0.04354
+3 ENSG00000000457  82.07877      0.3307639 1.207585e-01 0.00005
+4 ENSG00000000460 356.07160     -1.8636578 4.096103e-51 0.00025
+5 ENSG00000001036 919.60675     -0.3482723 3.922539e-05 0.19231
+6 ENSG00000001084 529.59397     -0.6764194 8.192621e-13 0.06244
+```
+
+--
+
+&gt; Is there a pattern in my list of DEGs?
+
+--
+
+- Do my DEGs work together?
+- Are they involved in a biological process?
+- Are they involved in a known pathway?
+- Reduce gene lists to biologically interpretable terms
+- Pick interesting genes based on function
+- Less prone to false-positives on the gene-level
+- Interpretation of genome-wide results
+
+---
+
+name: gsa
+
+## Gene set analyses (GSA)
+
+* Requires cut-off
+* Omits any expression metric
+* Good to test overlap of signif genes in two comparisons
+* Computationally fast
+
+.size-90[![](Figures/ora.png)]
+
+---
+name: gsa-2
+
+## GSA input
+
+```
+  ensembl_gene_id  baseMean log2FoldChange       pvalue    padj
+1 ENSG00000000003 490.01721      0.9145204 3.661641e-17 0.00376
+2 ENSG00000000419 817.78066     -0.1894651 6.001737e-02 0.04354
+3 ENSG00000000457  82.07877      0.3307639 1.207585e-01 0.06244
+4 ENSG00000000460 356.07160     -1.8636578 4.096103e-51 0.12002
+5 ENSG00000001036 919.60675     -0.3482723 3.922539e-05 0.19231
+6 ENSG00000001084 529.59397     -0.6764194 8.192621e-13 0.00005
+```
+
+Input set: `ENSG00000000003, ENSG00000000419, ENSG00000001084`  
+Universe: `ENSG00000000003, ENSG00000000419, ENSG00000000457, ENSG00000000460, ENSG00000001036, ENSG00000001084`  
+
+---
+name: gsea
+
+## Gene set enrichment analyses (GSEA)
+
+* All genes are used
+* Ranked by an expression metric/gene-level statistic
+
+![](Figures/gsea.jpg)
+
+---
+name: gsea-2
+
+## GSEA input
+
+```
+  ensembl_gene_id  baseMean log2FoldChange       pvalue    padj
+1 ENSG00000000003 490.01721      0.9145204 3.661641e-17 0.00376
+2 ENSG00000000419 817.78066     -0.1894651 6.001737e-02 0.04354
+3 ENSG00000000457  82.07877      0.3307639 1.207585e-01 0.06244
+4 ENSG00000000460 356.07160     -1.8636578 4.096103e-51 0.12002
+5 ENSG00000001036 919.60675     -0.3482723 3.922539e-05 0.19231
+6 ENSG00000001084 529.59397     -0.6764194 8.192621e-13 0.00005
+```
+
+* Input is a set of labelled ranked expression metrics.
+
+
+```
+## ENSG00000000003 ENSG00000000457 ENSG00000000419 ENSG00000001036 ENSG00000001084 
+##       0.9145204       0.3307639      -0.1894651      -0.3482723      -0.6764194 
+## ENSG00000000460 
+##      -1.8636578
+```
+
+---
+name: tools
+
+## Available Tools
+
+### R packages
+
+topGO, goana, goseq, topKEGG, kegga, enrichR, piano, clusterProfiler, Pathview, fgsea, gprofileR
+
+### Online
+
+[DAVID](https://david.ncifcrf.gov/), [GOrilla](http://cbl-gorilla.cs.technion.ac.il/), [Enrichr](https://amp.pharm.mssm.edu/Enrichr/), [Revigo](http://revigo.irb.hr/), [Webgestalt](http://webgestalt.org/), [Panther](http://pantherdb.org/), [Tair](https://www.arabidopsis.org/tools/go_term_enrichment.jsp)
+
+### Downloadable
+
+[GSEA](http://software.broadinstitute.org/gsea/index.jsp), [ErmineJ](https://erminej.msl.ubc.ca/), [Ingenuity Pathway analyses](https://www.qiagenbioinformatics.com/products/ingenuity-pathway-analysis/)
+
+---
+name: cons
+
+## Considerations
+
+* Pay attention to gene IDs
+* Bias in gene sets
+* Confusing gene set names
+* Consider gene set size
+* Adjust for multiple testing
+* Large number of highly overlapping gene-sets (representing a similar biological theme) can bias interpretation and take attention from other biological themes that are represented by fewer gene-sets
+
+---
+
+## HMR as a Network and gene set Enrichment Analyses
+
+Signalling, Co-expression, metabolic, Protein Protein Interaction, Phosphoproteins etc
+
+ - Network representation
+  - Gene-metabolite
+  - reaction associations
+  - Reaction- Pathway associations
+  
+ - **Piano [Package](https://varemo.github.io/piano/)** in R
+  
+  - Implements several different methods for gene set enrichment analyses.
+  - Provides direct comparison of several methods and allow building a consensus on enrichment analyses.
+  - Allow direction specific analyses
+  - Provides excellent visualization of result.
+  - Easy output/export of results for further analyses.
+  
+ 
+ 
+ 
+---
+## Piano workflow
+.pull-left-60[
+&lt;img src="Figures/GSEA_Piano.png" class="fancyimage size-100"&gt;
+
+**Leif Wigge's** [Piano](https://varemo.github.io/piano/) Package in R
+]
+.pull-right-40[
+&lt;img src="Figures/Network_for_Hive.png" class="fancyimage size-100"&gt;
+
+
+- One may use **Gene Expression**, **proteomics**, **metabolomics** or other data with small tweaks for individual omics level enrichment analyses.
+
+- Compare enrichment results across omics
+
+
+]
+
+???
+_Notes_.
+Figure 1.  Overview of the refined GSA workflow. ( A ) The key steps in the workflow. Starting from user-defined gene-level statistics, and their possible modifications, gene set statistics are calculated according to the 11 available methods. Significance of the gene sets is estimated based on a theoretical null distribution or a permutation approach. The final gene set P -values will be separated into the defined directionality classes, facilitating the interpretation step. ( B ) A graph representation of our GSA workflow. Each path through the graph corresponds to a unique run of the GSA. The nodes represent the number of settings that can be made at each step. The resulting directionality classes depend on the combination of settings made. ( C ) Not all paths, or combinations of settings, are allowed. The table shows which settings are possible for each gene set statistic method. The highlighted settings correspond to the highlighted path in B and will result in two of the three possible P -value classes
+
+---
+## Data Management
+.pull-left-50[
+- Data management is a key aspect in omics integration
+S4 classes 
+ - [ExpressionSet](https://www.bioconductor.org/packages/release/bioc/vignettes/Biobase/inst/doc/ExpressionSetIntroduction.pdf)
+ - [Summarized Epreriments](http://bioconductor.org/packages/release/bioc/html/SummarizedExperiment.html)
+ - [RaggedExPeriments](https://www.bioconductor.org/packages/release/bioc/html/RaggedExperiment.html)
+ - [MultiAssayExperiments](https://bioconductor.org/packages/release/bioc/html/MultiAssayExperiment.html)
+ - [Annotations BioMArt, Ensemble](https://cran.r-project.org/web/packages/biomartr/vignettes/Functional_Annotation.html)
+ - [BSGenomes](https://www.bioconductor.org/packages/release/bioc/html/BSgenome.html)
+ 
+- **Containanerize** your data to avoid irreproducibility hazard
+  - **Updates in clinical databases**
+  - **Updates in Annotations**
+  - **Coding mistakes in matching across datasets**
+]
+
+.pull-right-40[
+&lt;img src="Figures/Sample_Overview.png" class="fancyimage size-100"&gt;
+
+**Example**
+ - The sample IDs across data sets
+ - Sample and row meta data disagree
+ - Result in loss of costly statitical power
+]
+---
+##Data Visualization
+
+.pull-left-50[
+ - Go beyond 2D scatter plots and heat maps
+ - Layer your data in [**Circular format**](http://circos.ca)
+ - [Networks](https://www.jessesadler.com/post/network-analysis-with-r/) 
+ - [Hive plot](http://www.hiveplot.com)
+ 
+ &lt;img src="Figures/Circos3.png" class="fancyimage size-70"&gt;
+ 
+***Some of the best work goes unnoticed if not visually appealing***
+]
+
+.pull-left-50[
+&lt;img src="Figures/Network_for_Hive.png" class="fancyimage size-80"&gt;
+
+&lt;img src="Figures/HiveR_gems.jpeg" class="fancyimage size-80"&gt;
+]
+
+---
+## Omics Integration NBIS Course
+
+[Omics Integration and Systems Biology Course](https://nbisweden.github.io/workshop_omics_integration/) **October 5 - 9 , Lund** 
+- [Apply here](https://docs.google.com/forms/d/e/1FAIpQLSeTtSUQOD9gox-8OtGTX23Aie3UTNJ9VUfuLXCT0kJSU2RhGQ/viewform), **Deadline for registration: 21/08/2020**
+
+- Topics Covered
+ - Data wrangling in omics studies
+ - Condition-specific and personalized modeling through Genome-scale Metabolic models based on integration of transcriptomic, proteomic and metabolomic data;
+Biological network inference, community and topology analysis and visualization
+ - Identification of key biological functions and pathways;
+ - Identification of potential biomarkers and targetable genes through modeling and biological network analysis;
+ - Application of key machine learning methods for multi-omics analysis including deep learning;
+ - Multi-omics integration, clustering and dimensionality reduction;
+ - Similarity network fusion and Recommender systems;
+ - Integrated data visualization techniques
+
+---
+
+
+
+#Any Questions
+
+- ......
+- ..........
+
+- ................
+
+
+
+
+
+
+
+#Thank You
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="assets/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "4:3",
+"highlightLanguage": "r",
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": "falsep",
+"slideNumberFormat": "Medical bioinformatics 2020 • %current%/%total%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
